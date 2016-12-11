@@ -16,35 +16,43 @@ class GermanTranslation
   include Enumerable
   include Hashlike
   
-  attr_reader :orig
-  
   def initialize(orig)
-    @orig = orig
+    @english = orig
+    @german = translate(orig)
   end
-  
+
+  def orig
+    @english
+  end
+
+  # this is the most important method
+  # because all other methods are implemented via this method
   def to_h
-    orig.reduce({}) do |memo, (key, value)|
+    @german
+  end
+
+  def [](key)
+    key_en = translate_to_en(key)
+    super(key) if key_en
+  end
+
+  def []=(key, value)
+    key_en = translate_to_en(key)
+
+    if key_en
+      orig[key_en] = value
+      super(key, value)
+    end
+  end
+
+  private
+
+  def translate(hash)
+    hash.reduce({}) do |memo, (key, value)|
       key = translate_to_de(key)
       memo[key] = value if key
       memo
     end
-  end
-
-  def [](key)
-    key = translate_to_en(key)
-    super(key) if key
-  end
-
-  def []=(key, value)
-    key = translate_to_en(key)
-    super(key, value) if key
-  end
-
-  private
-  
-  # this is the most important method because all other methods are implemented via this method
-  def _hash
-    orig
   end
 
   def translate_to_de(key)
