@@ -82,7 +82,8 @@ de[:vorname] = "Foobarz"
 de.to_h # => { vorname: "Foobarz", nachname: "Gozinto", alter: 42 }
 de.orig # => { first_name: "Foobarz", last_name: "Gozinto", age: 42 }
 ```
-Neat. There are only some method that are important to override (if neccessary):
+## Interface
+There are only some method that are important to override (if neccessary):
 * `#delete(key)` : deletes the value with the key `key`
 * `#[](key)` : returns the value associated to the key `key` (or nil if not defined)
 * `#[]=(key, value)` : defines `value` to the key `key`
